@@ -1,0 +1,29 @@
+<!--pages/login/login.wxml-->
+<view class="index">
+  <!--头部-->
+  <view class="index-hd">
+    <image class='index-logo' src='../../imgs/ic_logo.png'></image>
+    <view class="kind-list-text">用户登录</view>
+  </view>
+  <!--body-->
+  <form bindsubmit='formSubmit'>
+    <view class="index-bd">
+      <view>
+        <block wx:for-items="{{list}}" wx:key="{{item.id}}">
+          <view class="kind-list-item">
+
+            <view class="kind-list-item-hd">
+              <input password='{{item.isPassword}}' name="{{item.id}}" class="kind-list-text" type='{{item.type}}' placeholder='{{item.name}}' maxlength='{{item.maxLength}}'></input>
+            </view>
+          </view>
+        </block>
+
+        <button type="primary" form-type='submit'>登录</button>
+
+        <view class="text-box" bindtap='toRegister'>
+          <text>没有账号？前去注册</text>
+        </view>
+      </view>
+    </view>
+  </form>
+</view>

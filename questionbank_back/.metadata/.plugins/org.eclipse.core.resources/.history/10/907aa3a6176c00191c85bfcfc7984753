@@ -1,0 +1,5 @@
+package cn.jbolt.question;
+
+public class QuestionService {
+
+}

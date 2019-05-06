@@ -1,0 +1,42 @@
+<!--pages/report/report.wxml-->
+<view class="index-bd">
+  <block>
+    <view class="kind-list-item">
+      <view class="kind-list-item-hd">
+        <text>答对{{correctCount}}题，共{{total}}题，正确率{{correctRatio*100}}%</text>
+      </view>
+    </view>
+  </block>
+
+  <block>
+    <view class="kind-list-item">
+      <view class="kind-list-item-hd">
+        <text>马原，答错{{count1}}题</text>
+      </view>
+    </view>
+  </block>
+
+  <block>
+    <view class="kind-list-item">
+      <view class="kind-list-item-hd">
+        <text>毛中特，答错{{count2}}题</text>
+      </view>
+    </view>
+  </block>
+
+  <block>
+    <view class="kind-list-item">
+      <view class="kind-list-item-hd">
+        <text>思修，答错{{count3}}题</text>
+      </view>
+    </view>
+  </block>
+
+  <block>
+    <view class="kind-list-item">
+      <view class="kind-list-item-hd">
+        <text>中国近代史，答错{{count4}}题</text>
+      </view>
+    </view>
+  </block>
+</view>

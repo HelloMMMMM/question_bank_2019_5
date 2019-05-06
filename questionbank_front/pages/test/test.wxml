@@ -1,0 +1,76 @@
+<!--pages/test/test.wxml-->
+<view class="index-bd">
+
+  <block>
+    <view class="kind-list-item">
+      <view class="kind-list-item-hd">
+        <text class='questionIndex'>第{{currentQuestionIndex>questionsCount?questionsCount:currentQuestionIndex}}题，共{{questionsCount}}题</text>
+      </view>
+      <view class="kind-list-item-hd">
+        <text class='questionId' decode='{{true}}'>{{currentQuestion.type==1?'单选题':'多选题'}},题目ID：{{currentQuestion.id}}</text>
+      </view>
+    </view>
+  </block>
+
+  <block>
+    <view class="kind-list-item">
+      <view class="kind-list-item-hd">
+        <text>{{currentQuestion.content}}（）</text>
+      </view>
+    </view>
+  </block>
+
+  <block>
+    <view class="kind-list-item">
+      <view class="kind-list-item-hd" data-index='0' data-option='a' bindtap="{{showParse?'':'setYourAnswer'}}">
+        <image class='icon' src="{{optionAnswer[0]?'../../imgs/ic_option_selected.png':'../../imgs/ic_option_unselected.png'}}"></image>
+        <view class="kind-list-text">{{currentQuestion.a}}</view>
+      </view>
+
+      <view class="kind-list-item-hd" data-index='1' data-option='b' bindtap="{{showParse?'':'setYourAnswer'}}">
+        <image class='icon' src="{{optionAnswer[1]?'../../imgs/ic_option_selected.png':'../../imgs/ic_option_unselected.png'}}"></image>
+        <view class="kind-list-text">{{currentQuestion.b}}</view>
+      </view>
+
+      <view class="kind-list-item-hd" data-index='2' data-option='c' bindtap="{{showParse?'':'setYourAnswer'}}">
+        <image class='icon' src="{{optionAnswer[2]?'../../imgs/ic_option_selected.png':'../../imgs/ic_option_unselected.png'}}"></image>
+        <view class="kind-list-text">{{currentQuestion.c}}</view>
+      </view>
+
+      <view class="kind-list-item-hd" data-index='3' data-option='d' bindtap="{{showParse?'':'setYourAnswer'}}">
+        <image class='icon' src="{{optionAnswer[3]?'../../imgs/ic_option_selected.png':'../../imgs/ic_option_unselected.png'}}"></image>
+        <view class="kind-list-text">{{currentQuestion.d}}</view>
+      </view>
+    </view>
+  </block>
+
+  <view wx:if="{{showParse}}">
+    <block>
+      <view class="kind-list-item">
+        <view class="kind-list-item-hd">
+          <text class="{{isCorrect?'correct':'wrong'}}">{{isCorrect?'回答正确!':'回答错误!'}}</text>
+          <text class='correctAnswer' decode='{{true}}'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;正确答案:{{currentQuestion.answer}}</text>
+        </view>
+      </view>
+    </block>
+
+    <block>
+      <view class="kind-list-item">
+        <view class="kind-list-item-hd">
+          <text class='point'>知识点：{{currentQuestion.point}}</text>
+        </view>
+      </view>
+    </block>
+
+    <block>
+      <view class="kind-list-item">
+        <view class="kind-list-item-hd">
+          <text class='parse'>解析：{{currentQuestion.parse}}</text>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <button wx:if="{{!canCommit}}" type="primary" bindtap='{{showParse?"nextQuestion":"submit"}}' disabled='{{yourAnswer?false:true}}'>{{showParse?'下一题':'提交'}}</button>
+  <button wx:else type="primary" bindtap="{{wrongSetRecordId?'exitTest':'toReport'}}">{{wrongSetRecordId?'复习完成':'完成答题，查看报告'}}</button>
+</view>

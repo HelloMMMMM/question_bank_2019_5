@@ -1,0 +1,23 @@
+package cn.jbolt.question;
+
+import java.util.List;
+
+import com.jfinal.aop.Inject;
+import com.jfinal.core.Controller;
+
+import cn.jbolt.apibean.QuestionBean;
+import cn.jbolt.common.model.Question;
+
+public class QuestionController extends Controller {
+
+	@Inject
+	private QuestionService questionService;
+
+	public void getQuestion() {
+		List<Question> questions = questionService.getQuestions();
+		QuestionBean questionBean = new QuestionBean();
+		questionBean.setCode(1);
+		questionBean.setQuestions(questions);
+		renderJson(questionBean);
+	}
+}

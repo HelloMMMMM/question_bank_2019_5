@@ -1,0 +1,11 @@
+<!--pages/index/index.wxml-->
+<view>
+  <view wx:if="{{user}}">
+    <button type="primary" class='btn' bindtap='startTest'>答题</button>
+    <button type="primary" class='btn' bindtap='myWrongSet'>我的错题</button>
+    <button type="primary" class='btn' bindtap='exit'>退出登录</button>
+  </view>
+  <view wx:else>
+    <button type="primary" class='btn' bindtap='toLogin'>登录</button>
+  </view>
+</view>

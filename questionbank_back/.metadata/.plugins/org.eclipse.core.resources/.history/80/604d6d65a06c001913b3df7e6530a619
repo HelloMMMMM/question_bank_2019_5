@@ -1,0 +1,13 @@
+package cn.jbolt.testrecord;
+
+import cn.jbolt.common.model.Testrecord;
+
+public class TestRecordService {
+
+	public void addRecord(int userId, String questionIds, String answers) {
+		String[] qIds = questionIds.split(",");
+		String[] a = answers.split("|");
+		int isFinish = qIds.length == a.length ? 1 : 2;
+		new Testrecord().setUserId(userId).setQuestionIds(questionIds).setAnswers(answers).setIsFinish(isFinish).save();
+	}
+}

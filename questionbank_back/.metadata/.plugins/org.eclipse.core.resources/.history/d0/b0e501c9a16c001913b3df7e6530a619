@@ -1,0 +1,7 @@
+package cn.jbolt.testrecord;
+
+import com.jfinal.core.Controller;
+
+public class TestRecordController extends Controller {
+
+}

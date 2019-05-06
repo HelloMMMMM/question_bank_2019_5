@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="cn.jbolt.user.UserController"/>
+<fullyQualifiedTypeName name="cn.jbolt.common.model._MappingKit"/>
+<fullyQualifiedTypeName name="cn.jbolt.user.UserService"/>
+<fullyQualifiedTypeName name="com.jfinal.kit.Ret"/>
+<fullyQualifiedTypeName name="cn.jbolt.apibean.OpenIdBean"/>
+<fullyQualifiedTypeName name="cn.jbolt.common.model.User"/>
+<fullyQualifiedTypeName name="cn.jbolt.apibean.UserBean"/>
+<fullyQualifiedTypeName name="cn.jbolt.apibean.QuestionBean"/>
+<fullyQualifiedTypeName name="cn.jbolt.question.QuestionController"/>
+<fullyQualifiedTypeName name="net.sf.cglib.transform.impl.AddDelegateTransformer"/>
+<fullyQualifiedTypeName name="cn.jbolt.testrecord.TestRecordController"/>
+<fullyQualifiedTypeName name="org.ietf.jgss.GSSException"/>
+<fullyQualifiedTypeName name="cn.jbolt.apibean.TestRecordBean"/>
+<fullyQualifiedTypeName name="com.jfinal.aop.Aop"/>
+<fullyQualifiedTypeName name="cn.jbolt.question.QuestionService"/>
+<fullyQualifiedTypeName name="com.jfinal.plugin.activerecord.Page"/>
+<fullyQualifiedTypeName name="cn.jbolt.apibean.ResponseBean"/>
+<fullyQualifiedTypeName name="cn.jbolt.apibean.ReportListBean"/>
+<fullyQualifiedTypeName name="cn.jbolt.apibean.ReportBean"/>
+<fullyQualifiedTypeName name="com.jfinal.aop.Inject"/>
+<fullyQualifiedTypeName name="cn.jbolt.testrecord.TestRecordService"/>
+<fullyQualifiedTypeName name="cn.jbolt.common.model.Testrecord"/>
+<fullyQualifiedTypeName name="cn.jbolt.wrongset.WrongSetService"/>
+<fullyQualifiedTypeName name="cn.jbolt.common.model.Wrongset"/>
+<fullyQualifiedTypeName name="com.sun.tools.classfile.Annotation.element_value"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="com.jfinal.template.expr.ast.Map"/>
+<fullyQualifiedTypeName name="java.util.HashMap"/>
+<fullyQualifiedTypeName name="java.util.Map.Entry"/>
+<fullyQualifiedTypeName name="java.lang.Integer"/>
+<fullyQualifiedTypeName name="java.lang.String"/>
+<fullyQualifiedTypeName name="com.jfinal.kit.StrKit"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="cn.jbolt.common.model.Question"/>
+<fullyQualifiedTypeName name="java.util.Map"/>
+<fullyQualifiedTypeName name="java.lang.Math"/>
+</qualifiedTypeNameHistroy>

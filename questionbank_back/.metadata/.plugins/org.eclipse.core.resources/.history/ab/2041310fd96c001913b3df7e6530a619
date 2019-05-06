@@ -1,0 +1,44 @@
+package cn.jbolt.testrecord;
+
+import java.util.List;
+
+import com.jfinal.kit.StrKit;
+
+import cn.jbolt.common.model.Testrecord;
+
+public class TestRecordService {
+
+	public void addRecord(int userId, String questionIds, String answers) {
+		String[] qIds = questionIds.split(",");
+		String[] a = answers.split("\\|");
+		int isFinish = qIds.length == a.length ? 1 : 2;
+		new Testrecord().setUserId(userId).setQuestionIds(questionIds).setAnswers(answers).setIsFinish(isFinish).save();
+	}
+
+	public void updateRecord(int recordId, String answers, String correctOrWrong) {
+		Testrecord testrecord = Testrecord.dao.findById(recordId);
+		if (testrecord != null) {
+			String lastAnswers = testrecord.getAnswers();
+			if (StrKit.isBlank(lastAnswers)) {
+				// 虽生成了测试记录，但未答题
+				testrecord.setAnswers(answers);
+				testrecord.setIsCorrect(correctOrWrong);
+			} else {
+				testrecord.setAnswers(lastAnswers + "|" + answers);
+				testrecord.setIsCorrect(testrecord.getIsCorrect() + "," + correctOrWrong);
+			}
+			String questionIds = testrecord.getQuestionIds();
+			String nowAnswers = testrecord.getAnswers();
+			String[] qIds = questionIds.split(",");
+			String[] a = nowAnswers.split("\\|");
+			int isFinish = qIds.length == a.length ? 1 : 2;
+			testrecord.setIsFinish(isFinish).update();
+		}
+	}
+
+	public Testrecord getNotFinishRecord(int userId) {
+		List<Testrecord> testrecords = Testrecord.dao.find("select * from testrecord where userId=? and isFinish=?",
+				userId, 2);
+		return testrecords != null && testrecords.size() > 0 ? testrecords.get(0) : null;
+	}
+}

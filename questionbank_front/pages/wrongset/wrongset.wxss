@@ -1,0 +1,9 @@
+/* pages/wrongset/wrongset.wxss */
+@import "../common/index.wxss";
+
+.goods-btn{
+  padding-right: 30rpx;
+  padding-bottom: 16rpx;
+  text-align: end;
+  transition: opacity .3s;
+}

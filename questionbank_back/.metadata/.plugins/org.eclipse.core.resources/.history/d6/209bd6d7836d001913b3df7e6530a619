@@ -1,0 +1,103 @@
+package cn.jbolt.testrecord;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.jfinal.aop.Aop;
+import com.jfinal.aop.Inject;
+import com.jfinal.core.Controller;
+import com.jfinal.plugin.activerecord.Page;
+
+import cn.jbolt.apibean.ReportBean;
+import cn.jbolt.apibean.TestRecordBean;
+import cn.jbolt.common.model.Question;
+import cn.jbolt.common.model.Testrecord;
+import cn.jbolt.question.QuestionService;
+
+public class TestRecordController extends Controller {
+
+	@Inject
+	private TestRecordService testRecordService;
+
+	public void addOrUpdateRecord() {
+		int userId = getParaToInt("userId");
+		String questionIds = get("questionIds");
+		String answers = get("answers");
+		String correctOrWrong = get("correctOrWrong");
+		int recordId = getParaToInt("recordId", 0);
+		Testrecord testrecord;
+		if (recordId == 0) {
+			// 添加刷题记录
+			testrecord = testRecordService.addRecord(userId, questionIds, answers, correctOrWrong);
+		} else {
+			// 更新刷题记录
+			testrecord = testRecordService.updateRecord(recordId, answers, correctOrWrong);
+		}
+		TestRecordBean testRecordBean = new TestRecordBean();
+		testRecordBean.setCode(1);
+		testRecordBean.setRecordId(testrecord.getId());
+		renderJson(testRecordBean);
+	}
+
+	public void getReport() {
+		int recordId = getParaToInt("recordId");
+		Testrecord testrecord = testRecordService.getRecord(recordId);
+		renderJson(createReport(testrecord));
+	}
+
+	/**
+	 * 根据答题记录生成答题报告
+	 */
+	private ReportBean createReport(Testrecord testrecord) {
+		String correctOrWrong = testrecord.getIsCorrect();
+		String qIds = testrecord.getQuestionIds();
+		String[] c = correctOrWrong.split(",");
+		String[] q = qIds.split(",");
+		int correctCount = 0;
+		List<String> wrongIds = new ArrayList<>();
+		for (int i = 0; i < c.length; i++) {
+			if ("1".equals(c[i])) {
+				// 正确
+				correctCount++;
+			} else if ("2".equals(c[i])) {
+				// 错误
+				wrongIds.add(q[i]);
+			}
+		}
+		// 正确率
+		float correctRatio = correctCount * 1f / c.length;
+		// 四个课程的错题数
+		QuestionService questionService = Aop.get(QuestionService.class);
+		int count1 = 0, count2 = 0, count3 = 0, count4 = 0;
+		for (int i = 0; i < wrongIds.size(); i++) {
+			Question question = questionService.getQuestion(Integer.valueOf(wrongIds.get(i)));
+			if ("马原".equals(question.getSubject())) {
+				count1++;
+			} else if ("毛中特".equals(question.getSubject())) {
+				count2++;
+			} else if ("思修".equals(question.getSubject())) {
+				count3++;
+			} else if ("中国近代史".equals(question.getSubject())) {
+				count4++;
+			}
+		}
+		ReportBean reportBean = new ReportBean();
+		reportBean.setCode(1);
+		reportBean.setRecordId(testrecord.getId());
+		reportBean.setCorrectCount(correctCount);
+		reportBean.setQuestionTotal(c.length);
+		reportBean.setCorrectRatio(correctRatio);
+		reportBean.setCount1(count1);
+		reportBean.setCount2(count2);
+		reportBean.setCount3(count3);
+		reportBean.setCount4(count4);
+		return reportBean;
+	}
+
+	public void getMyRecords() {
+		int page = getParaToInt("page", 1);
+		int userId = getParaToInt("userId");
+		Page<Testrecord> aPage = testRecordService.getFinishRecords(userId, page);
+
+	}
+}

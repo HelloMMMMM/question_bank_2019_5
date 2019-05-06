@@ -1,0 +1,29 @@
+package cn.jbolt.question;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.jbolt.common.model.Question;
+
+public class QuestionService {
+
+	public List<Question> getQuestions() {
+		return Question.dao.find("select * from question limit 20");
+	}
+
+	public List<Question> getQuestions(String questionIds) {
+		String[] qIds = questionIds.split(",");
+		List<Question> questions = new ArrayList<>();
+		for (String id : qIds) {
+			Question question = Question.dao.findById(Integer.valueOf(id));
+			if (question != null) {
+				questions.add(question);
+			}
+		}
+		return questions;
+	}
+
+	public Question getQuestion(int questionId) {
+		return Question.dao.findById(questionId);
+	}
+}

@@ -1,0 +1,12 @@
+package cn.jbolt.question;
+
+import java.util.List;
+
+import cn.jbolt.common.model.Question;
+
+public class QuestionService {
+	
+	public List<Question> getQuestions(){
+		return Question.dao.find("select * from question limit 20");
+	}
+}

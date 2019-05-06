@@ -1,0 +1,36 @@
+/* pages/test/test.wxss */
+@import "../common/index.wxss";
+
+.questionIndex {
+  color: #3cc51f;
+}
+
+.correct {
+  color: green;
+}
+
+.wrong {
+  color: red;
+}
+
+.correctAnswer {
+  color: green;
+}
+
+.point {
+  color: blue;
+}
+
+.parse {
+  color: brown;
+}
+
+.questionId {
+  color: purple;
+}
+
+.icon {
+  width: 48rpx;
+  height: 48rpx;
+  margin-right: 16rpx;
+}

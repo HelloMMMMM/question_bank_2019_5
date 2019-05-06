@@ -1,0 +1,5 @@
+package cn.jbolt.apibean;
+
+public class QuestionBean {
+
+}

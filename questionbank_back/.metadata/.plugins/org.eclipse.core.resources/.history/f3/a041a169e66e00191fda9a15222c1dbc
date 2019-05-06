@@ -1,0 +1,143 @@
+package cn.jbolt.question;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import cn.jbolt.common.model.Question;
+import cn.jbolt.common.model.Testrecord;
+import cn.jbolt.common.model.Wrongset;
+import cn.jbolt.testrecord.TestRecordService;
+import cn.jbolt.wrongset.WrongSetService;
+
+public class QuestionService {
+
+	public List<Question> getQuestions(int userId) {
+		TestRecordService testRecordService = new TestRecordService();
+		Testrecord testrecord = testRecordService.getNewestNotFinishRecord(userId);
+		WrongSetService wrongSetService = new WrongSetService();
+		Wrongset wrongset = wrongSetService.getWrongSet(testrecord.getId());
+		List<Question> questions = new ArrayList<>(20);
+		List<Question> questions1 = Question.dao.find("select * from question where subject=?", "马原");
+		List<Question> questions2 = Question.dao.find("select * from question where subject=?", "毛中特");
+		List<Question> questions3 = Question.dao.find("select * from question where subject=?", "思修");
+		List<Question> questions4 = Question.dao.find("select * from question where subject=?", "中国近代史");
+		if (testrecord == null || wrongset == null) {
+			// 没有上次做题记录或者有做题记录但是上次记录无错题,4科各随机5题
+			int random = (int) (Math.random() * 20);
+			for (int i = 1; i < 6; i++) {
+				questions.add(questions1.get(random * i));
+				questions.add(questions2.get(random * i));
+				questions.add(questions3.get(random * i));
+				questions.add(questions4.get(random * i));
+			}
+		} else {
+			// 有做题记录而且上次记录有错题
+			// 错题或错题相关知识点的题目占40%，其余随机
+			List<Question> wrongQuestions = getQuestions(wrongset.getWrongset());
+			List<Question> addedWrongQuestions = new ArrayList<>(8);
+			int random = (int) (Math.random() * 20);
+			if (wrongQuestions.size() >= 8) {
+				// 错题有8个，取8个
+				for (int i = 0; i < 8; i++) {
+					addedWrongQuestions.add(wrongQuestions.get(i));
+				}
+			} else {
+				// 错题没8个，再取几个相同知识点的(取错题最多的那个知识点的问题,错的越多,也要练更多,很符合常理)
+				String targetPoint = getMostPointFromWrongSet(wrongQuestions);
+				addedWrongQuestions.addAll(wrongQuestions);
+				List<Question> pointQuestions = Question.dao.find("select * from question where point=?", targetPoint);
+				for (int i = 0; i < 8 - wrongQuestions.size(); i++) {
+					Question question = pointQuestions.get(random * i);
+					if (containsThisQuestion(question.getId(), pointQuestions)) {
+						i--;
+						continue;
+					}
+					addedWrongQuestions.add(question);
+				}
+			}
+			questions.addAll(addedWrongQuestions);
+			// 随机其他题目
+			// 随机4题马原
+			for (int i = 0; i < 4; i++) {
+				Question question = questions1.get(random * i);
+				if (containsThisQuestion(question.getId(), addedWrongQuestions)) {
+					i--;
+					continue;
+				}
+				questions.add(question);
+			}
+			// 随机4题毛中特
+			for (int i = 0; i < 4; i++) {
+				Question question = questions2.get(random * i);
+				if (containsThisQuestion(question.getId(), addedWrongQuestions)) {
+					i--;
+					continue;
+				}
+				questions.add(question);
+			}
+			// 随机4题思修
+			for (int i = 0; i < 4; i++) {
+				Question question = questions3.get(random * i);
+				if (containsThisQuestion(question.getId(), addedWrongQuestions)) {
+					i--;
+					continue;
+				}
+				questions.add(question);
+			}
+			// 随机4题中国近代史
+			for (int i = 0; i < 4; i++) {
+				Question question = questions4.get(random * i);
+				if (containsThisQuestion(question.getId(), addedWrongQuestions)) {
+					i--;
+					continue;
+				}
+				questions.add(question);
+			}
+		}
+		return questions;
+	}
+
+	private boolean containsThisQuestion(int questionId, List<Question> questions) {
+		for (Question question : questions) {
+			if (question.getId() == questionId) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private String getMostPointFromWrongSet(List<Question> questions) {
+		Map<String, Integer> points = new HashMap<>();
+		for (Question question : questions) {
+			Integer count = points.get(question.getPoint());
+			points.put(question.getPoint(), count == null ? 1 : (count + 1));
+		}
+		int maxCount = 0;
+		String targetPotint = null;
+		for (Map.Entry<String, Integer> entry : points.entrySet()) {
+			if (maxCount < entry.getValue()) {
+				maxCount = entry.getValue();
+				targetPotint = entry.getKey();
+			}
+		}
+		return targetPotint;
+	}
+
+	public List<Question> getQuestions(String questionIds) {
+		String[] qIds = questionIds.split(",");
+		List<Question> questions = new ArrayList<>();
+		for (String id : qIds) {
+			Question question = Question.dao.findById(Integer.valueOf(id));
+			if (question != null) {
+				questions.add(question);
+			}
+		}
+		return questions;
+	}
+
+	public Question getQuestion(int questionId) {
+		return Question.dao.findById(questionId);
+	}
+}

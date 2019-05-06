@@ -1,0 +1,54 @@
+package cn.jbolt.question;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.jbolt.common.model.Question;
+import cn.jbolt.common.model.Testrecord;
+import cn.jbolt.common.model.Wrongset;
+import cn.jbolt.testrecord.TestRecordService;
+import cn.jbolt.wrongset.WrongSetService;
+
+public class QuestionService {
+
+	public List<Question> getQuestions(int userId) {
+		TestRecordService testRecordService = new TestRecordService();
+		Testrecord testrecord = testRecordService.getNewestNotFinishRecord(userId);
+		WrongSetService wrongSetService = new WrongSetService();
+		Wrongset wrongset = wrongSetService.getWrongSet(testrecord.getId());
+		List<Question> questions = new ArrayList<>(20);
+		if (testrecord == null || wrongset == null) {
+			// 没有上次做题记录或者有做题记录但是上次记录无错题,4科各随机5题
+			List<Question> questions1 = Question.dao.find("select * from question where subject=?", "马原");
+			List<Question> questions2 = Question.dao.find("select * from question where subject=?", "毛中特");
+			List<Question> questions3 = Question.dao.find("select * from question where subject=?", "思修");
+			List<Question> questions4 = Question.dao.find("select * from question where subject=?", "中国近代史");
+			for (int i = 0; i < 5; i++) {
+				questions.add(questions1.get((int) Math.random() * questions1.size()));
+				questions.add(questions2.get((int) Math.random() * questions2.size()));
+				questions.add(questions3.get((int) Math.random() * questions3.size()));
+				questions.add(questions4.get((int) Math.random() * questions4.size()));
+			}
+		} else {
+			// 有做题记录而且上次记录有错题
+
+		}
+		return questions;
+	}
+
+	public List<Question> getQuestions(String questionIds) {
+		String[] qIds = questionIds.split(",");
+		List<Question> questions = new ArrayList<>();
+		for (String id : qIds) {
+			Question question = Question.dao.findById(Integer.valueOf(id));
+			if (question != null) {
+				questions.add(question);
+			}
+		}
+		return questions;
+	}
+
+	public Question getQuestion(int questionId) {
+		return Question.dao.findById(questionId);
+	}
+}

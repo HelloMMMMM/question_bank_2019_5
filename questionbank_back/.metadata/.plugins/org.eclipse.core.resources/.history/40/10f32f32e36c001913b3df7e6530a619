@@ -1,0 +1,31 @@
+package cn.jbolt.testrecord;
+
+import com.jfinal.aop.Inject;
+import com.jfinal.core.Controller;
+
+import cn.jbolt.apibean.ResponseBean;
+
+public class TestRecordController extends Controller {
+
+	@Inject
+	private TestRecordService testRecordService;
+
+	public void addOrUpdateRecord() {
+		int userId = getParaToInt("userId");
+		String questionIds = get("questionIds");
+		String answers = get("answers");
+		String correctOrWrong = get("correctOrWrong");
+		int recordId = getParaToInt("recordId", 0);
+		if (recordId == 0) {
+			// 添加刷题记录
+			testRecordService.addRecord(userId, questionIds, answers, correctOrWrong);
+		} else {
+			// 更新刷题记录
+			testRecordService.updateRecord(recordId, answers, correctOrWrong);
+		}
+		ResponseBean responseBean = new ResponseBean();
+		responseBean.setCode(1);
+		responseBean.setMsg("已保存");
+		renderJson(responseBean);
+	}
+}

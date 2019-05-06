@@ -1,0 +1,39 @@
+package cn.jbolt.question;
+
+import java.util.List;
+
+import com.jfinal.aop.Inject;
+import com.jfinal.core.Controller;
+
+import cn.jbolt.apibean.QuestionBean;
+import cn.jbolt.common.model.Question;
+import cn.jbolt.common.model.Testrecord;
+import cn.jbolt.testrecord.TestRecordService;
+
+public class QuestionController extends Controller {
+
+	@Inject
+	private QuestionService questionService;
+	@Inject
+	private TestRecordService testRecordService;
+
+	public void getQuestion() {
+		int userId = getParaToInt("userId");
+		Testrecord testrecord = testRecordService.getNotFinishRecord(userId);
+		QuestionBean questionBean = new QuestionBean();
+		List<Question> questions;
+		if (testrecord == null) {
+			questions = questionService.getQuestions();
+		} else {
+			questions = questionService.getQuestions(testrecord.getQuestionIds());
+			String nowAnswers=testrecord.getAnswers();
+			String[] a=nowAnswers.split("|");
+			questionBean.setRecordId(testrecord.getId());
+			questionBean.setStartIndex(a.length);
+			System.out.println(questionBean.getStartIndex());
+		}
+		questionBean.setCode(1);
+		questionBean.setQuestions(questions);
+		renderJson(questionBean);
+	}
+}

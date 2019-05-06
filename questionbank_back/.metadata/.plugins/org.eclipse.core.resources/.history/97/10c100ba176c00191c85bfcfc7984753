@@ -1,0 +1,7 @@
+package cn.jbolt.question;
+
+import com.jfinal.core.Controller;
+
+public class QuestionController extends Controller {
+
+}

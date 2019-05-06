@@ -1,0 +1,12 @@
+package cn.jbolt.question;
+
+import com.jfinal.aop.Inject;
+import com.jfinal.core.Controller;
+
+public class QuestionController extends Controller {
+	
+	@Inject
+	private QuestionService questionService;
+	
+	
+}

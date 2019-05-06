@@ -1,0 +1,30 @@
+<!--pages/wrongset/wrongset.wxml-->
+<view class="index-bd">
+  <view wx:for="{{list}}" wx:for-item="page" wx:key="*this">
+    <block wx:for="{{page}}" wx:for-item="report" wx:key="{{report.recordId}}">
+      <view class="kind-list-item">
+        <view class="kind-list-item-hd">
+          <text style='color:red;'>答题记录ID：{{report.recordId}}</text>
+        </view>
+        <view class="kind-list-item-hd">
+          <text>答对{{report.correctCount}}题，共{{report.questionTotal}}题，正确率{{report.correctRatio*100}}%</text>
+        </view>
+        <view class="kind-list-item-hd">
+          <text>马原，答错{{report.count1}}题</text>
+        </view>
+        <view class="kind-list-item-hd">
+          <text>毛中特，答错{{report.count2}}题</text>
+        </view>
+        <view class="kind-list-item-hd">
+          <text>思修，答错{{report.count3}}题</text>
+        </view>
+        <view class="kind-list-item-hd">
+          <text>中国近代史，答错{{report.count4}}题</text>
+        </view>
+        <view class='goods-btn'>
+          <button type="primary" size="mini" data-id='{{report.recordId}}' bindtap='toTest'>复习错题</button>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

@@ -1,0 +1,6 @@
+/* pages/index/index.wxss */
+@import "../common/index.wxss";
+
+.btn {
+  margin: 32rpx;
+}

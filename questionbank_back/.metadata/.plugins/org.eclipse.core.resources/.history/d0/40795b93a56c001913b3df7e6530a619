@@ -1,0 +1,22 @@
+package cn.jbolt.testrecord;
+
+import com.jfinal.aop.Inject;
+import com.jfinal.core.Controller;
+
+import cn.jbolt.apibean.ResponseBean;
+
+public class TestRecordController extends Controller {
+
+	@Inject
+	private TestRecordService testRecordService;
+
+	public void addRecord() {
+		int userId = getParaToInt("userId");
+		String questionIds = get("questionIds");
+		String answers = get("answers");
+		testRecordService.addRecord(userId, questionIds, answers);
+		ResponseBean responseBean = new ResponseBean();
+		responseBean.setCode(1);
+		renderJson(responseBean);
+	}
+}
